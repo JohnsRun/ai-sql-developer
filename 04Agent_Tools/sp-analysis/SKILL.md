@@ -25,13 +25,13 @@ version: 1.0
      - Invoking command
     - Procedure Body range in package body
     - Tables READ
-    - Include a clickable reference such as `[JTA_Packages.sql:255-263](03Development_Zone/Oracle_Package/JTA_Packages.sql#L255-L263)` so VS Code can jump directly to the lines where the call occurs (use workspace-relative paths).
+    - Include a clickable reference such as `[JTA_Packages.sql:255-263](Demo_GC_Usage/03Development_Zone/Oracle_Package/JTA_Packages.sql#L255-L263)` so VS Code can jump directly to the lines where the call occurs (use workspace-relative paths).
     - The `255-263` range must be the **true** line range in the current file version.
 
 3. Analyze the target SP body for Mechanism Analysis.
     - Break down the SP body into logical sections (e.g., Preparation, Data Loading, Transformations, Output).
     - For each section, summarize the key operations and data flow.
-    - Every bullet ends with a clickable reference that points to the relevant lines in the package (workspace-relative path).
+    - Every bullet ends with a clickable reference such as `[JTA_Packages.sql:255-263](Demo_GC_Usage/03Development_Zone/Oracle_Package/JTA_Packages.sql#L255-L263)` that points to the relevant lines in the package (workspace-relative path).
 
 
 4. Within the target SP body, identify any SPs that the target SP CALLS.
@@ -41,7 +41,7 @@ version: 1.0
       - Call Line
       - Procedure Body location/range
       - Tables READ
-    - Add clickable references like `[DOWNSTREAM(v1,v2)](03Development_Zone/Oracle_Package/JTA_Packages.sql#L255-L263)` for call lines and body locations (workspace-relative path), ensuring the call line is in the [] and matches the actual call statement line in the package body.
+    - Add clickable references like `[DOWNSTREAM(v1,v2)](Demo_GC_Usage/03Development_Zone/Oracle_Package/JTA_Packages.sql#L255-L263)` for call lines and body locations (workspace-relative path), ensuring the call line is in the [] and matches the actual call statement line in the package body.
     - The reference range must map to the exact call statement in the package body.
 
 5. If Upstream SP or Downstream SP are null, double-check to avoid mistakes and use --None-- to indicate no Upstream SP or Downstream SP.

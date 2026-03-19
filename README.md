@@ -45,6 +45,6 @@
 
 
 
-Reference
-[Using SQL Developer for VS Code](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/using-sql-developer-vs-code.html)
+**Reference**
+- [Using SQL Developer for VS Code](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/using-sql-developer-vs-code.html)
 

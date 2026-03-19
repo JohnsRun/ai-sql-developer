@@ -83,3 +83,7 @@ ALTER USER dev QUOTA UNLIMITED ON USERS;
 - Select the connection before running notebooks  
 - Avoid SYS/SYSTEM for development  
 - Use a dedicated user for AI-related features  
+
+
+### **Reference**
+- [Using SQL Developer for VS Code](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/using-sql-developer-vs-code.html)

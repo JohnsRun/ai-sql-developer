@@ -3,7 +3,7 @@
 
 > A high-efficiency SQL development workflow powered by AI — from natural language to optimized queries with automated validation and feedback loops.
 
-### [#1 Connect Your Database to VS Code](Docs_EN/01Connect_Your_Database_to_VSCode.md)
+### [#1 Connect Your Database to VSCode](Docs_EN/01Connect_Your_Database_to_VSCode.md)
 ### #2 Notebook is all your need
 ### #3 AI Coding with Github Copilot
 ### [#4 Skills are the key](Docs_EN/04Skills_are_the_key.md)
@@ -11,40 +11,6 @@
 
 
 
-## 1. Folder Information
-
-## Key Folders
-- .github/: Config files for AI Agent behavior in VS Code (instructions and skills).
-- 01Context_Docs/: Business and project background documents.
-- 02Development_Zone/: Oracle SQL packages and test scripts.
-- 03Agent_Memory/: AI-generated outputs and notes.
-- 04Agent_Tools/: Tool-specific skill assets and examples.
-
-## Current Folder Structure
-```text
-.
-├── AI_Agent_4PLSQL_Best_Practices.md
-├── README.md
-├── skills-lock.json
-├── .github/
-│   ├── copilot-instructions.md
-│   ├── instructions/
-│   └── skills/
-├── 01Context_Docs/
-│   ├── Business_Requirement.md
-│   ├── Project_Context.md
-│   └── Test_Plan.md
-├── 02Development_Zone/
-│   └── Oracle_Package/
-│       ├── JTA_Create_Database.sql
-│       ├── JTA_Packages.sql
-│       └── JTA_Test_Code.sql
-├── 03Agent_Memory/
-└── 04Agent_Tools/
-```
-
-
-
-**Reference**
+### **Reference**
 - [Using SQL Developer for VS Code](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/using-sql-developer-vs-code.html)
 

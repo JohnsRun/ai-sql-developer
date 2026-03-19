@@ -1,0 +1,65 @@
+cells:
+  - kind: 1
+    value: "# Connect Your Database to VS Code"
+    languageId: markdown
+  - kind: 1
+    value: |-
+      After installing VSCode, click `Extensions` to search Database extension.
+
+      We recommend you to use offical extension shown below.
+
+      - Oracle: Oracle SQL Developer Extension for VSCode
+
+      ![alt text](image-1.png)
+
+      - Mysql/SqlServer: SQL Server (mssql)
+
+      ![alt text](image-2.png)
+
+      In this blog, we use OracleSQL as the example.
+    languageId: markdown
+  - kind: 1
+    value: |-
+      After installing Oracle extension, we click it on the right bar.
+       
+      ![alt text](image-3.png)
+
+      Opened this extension, we click the plus sign to set Database Connect.
+
+      ![alt text](image-4.png)
+    languageId: markdown
+  - kind: 1
+    value: >-
+      If you can see all the Database objects, you succeed to connect to you
+      Database.
+
+
+      ![alt text](image-5.png)
+    languageId: markdown
+  - kind: 1
+    value: >-
+      You need to choose a connection on the right-down of VS Code to run the
+      notebooks.
+
+
+      ![alt text](image-6.png)
+
+
+      If you create a SYS/SYSTEM user, it is better to create another user with
+      the script below to trigger AI-enrichment feature.
+
+
+      Or you will get the error `AI Enrichment is not available on SYS or SYSTEM
+      schemas due to potential conflicts during installation` in the future.
+
+
+      Use `Ctrl + Alt + Enter` to run the script below.
+    languageId: markdown
+  - kind: 2
+    value: |-
+      CREATE USER dev IDENTIFIED BY dev123;
+
+      GRANT CONNECT, RESOURCE TO dev;
+
+      ALTER USER dev QUOTA UNLIMITED ON USERS;
+    languageId: oracle-sql

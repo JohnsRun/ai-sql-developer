@@ -1,4 +1,14 @@
-# 1. Folder Information
+# AI-Powered SQL Developer Workflow  
+### Next-Level SQL Development Efficiency with AI
+
+> A high-efficiency SQL development workflow powered by AI — from natural language to optimized queries with automated validation and feedback loops.
+
+- Connect Your Database to VS Code
+- Notebook is all your need
+- AI Coding with Github Copilot
+- Skills are the key.
+
+## 1. Folder Information
 
 ## Key Folders
 - .github/: Config files for AI Agent behavior in VS Code (instructions and skills).
@@ -46,4 +56,6 @@
 - [AI Agent for PL/SQL Best Practices (Notebook)](AI_Agent_4PLSQL_Best_Practices.ipynb)
 
 
+Reference
+[Using SQL Developer for VS Code](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/using-sql-developer-vs-code.html)
 

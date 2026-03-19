@@ -3,7 +3,7 @@
 
 > A high-efficiency SQL development workflow powered by AI — from natural language to optimized queries with automated validation and feedback loops.
 
-- Connect Your Database to VS Code
+- [Connect Your Database to VS Code](Docs_EN/01Connect_Your_Database_to_VSCode.sqlnb)
 - Notebook is all your need
 - AI Coding with Github Copilot
 - Skills are the key.

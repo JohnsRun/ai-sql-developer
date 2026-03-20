@@ -1,0 +1,74 @@
+cells:
+  - kind: 1
+    value: ""
+    languageId: markdown
+  - kind: 2
+    value: |-
+      create TABLE employees (
+          employee_id NUMBER PRIMARY KEY,
+          first_name VARCHAR2(50),
+          last_name VARCHAR2(50),
+          email VARCHAR2(100),
+          hire_date DATE,
+          job_id VARCHAR2(10),
+          salary NUMBER
+      );
+    languageId: oracle-sql
+  - kind: 2
+    value: |
+      --Search in employees
+    languageId: oracle-sql
+  - kind: 2
+    value: |
+      --debug: corrected queries for the cells below
+      select * 
+      rom employee;
+    languageId: oracle-sql
+  - kind: 1
+    value: "![alt text](image.png)"
+    languageId: markdown
+  - kind: 2
+    value: |
+      select owner, table_name from all_tables
+      where table_name = 'EMPLOYEES'
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      DECLARE 
+         i number(1); 
+         j number(1); 
+      BEGIN 
+         << outer_loop >> 
+         FOR i IN 1..3 LOOP 
+            << inner_loop >> 
+            FOR j IN 1..3 LOOP 
+               dbms_output.put_line('i is: '|| i || ' and j is: ' || j); 
+            END loop inner_loop; 
+         END loop outer_loop; 
+      END; 
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      DECLARE 
+         i number(1); 
+         j number(1); 
+      BEGIN 
+         FOR i IN 1..3 
+            << inner_loop >> 
+            FOR j IN 1..3 LOOP 
+               dbms_outpfdut.put_line('i is: '|| i || ' and j is: ' || j); 
+
+               Yasilifnfei
+            END loop inner_loop; 
+         END loop outer_loop; 
+      END; 
+      /
+    languageId: oracle-sql
+  - kind: 2
+    value: "@Script/AI_SQL_Developer/02Development_Zone/Oracle/ddl_dmployees.sql"
+    languageId: oracle-sql
+  - kind: 2
+    value: |
+      SELECT * FROM employees;
+    languageId: oracle-sql

@@ -7,6 +7,7 @@
 ### #2 Notebook Is What Your Need
 ### #3 AI Coding with Github Copilot
 ### [#4 Skills are the key](Docs_EN/04Skills_are_the_key.md)
+### #5 MCP: AI Query On the Database 
 
 
 

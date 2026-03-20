@@ -1,0 +1,172 @@
+cells:
+  - kind: 1
+    value: >-
+      # MCP: AI Query on the Database
+
+
+      This notebook summarizes the chatbot interactions that used MCP database
+      tools (SQLcl MCP) to query and manipulate Oracle database data.
+
+
+      ## Scope
+
+
+      - Environment: Oracle DB via saved SQLcl connections
+
+      - Focus: Connection management, metadata query, data insert, and data
+      retrieval
+
+      - Date: 20 March 2026
+    languageId: markdown
+  - kind: 1
+    value: |-
+      ## End-to-End Chatbot MCP Interaction Log
+
+      ### 1) List Available Connections
+
+      **User input**
+      - "list connection"
+
+      **MCP action**
+      - Tool: `mcp_sqlcl_-_sql_d_list-connections`
+
+      **Output**
+      - `Oracle_DEV_user123`
+      - `Oracle_DEV_Admin`
+
+      ### 2) Count Tables in Database
+
+      **User input**
+      - "Show me how many tables are in the database"
+
+      **MCP action (first attempt)**
+      - Tool: `mcp_sqlcl_-_sql_d_run-sql`
+      - Query:
+        - Count from `USER_TABLES`
+        - Count from `ALL_TABLES`
+
+      **Output (first attempt)**
+      - Error: `null connection not allowed`
+
+      **Recovery action**
+      - Tool: `mcp_sqlcl_-_sql_d_connect`
+      - Connected with: `Oracle_DEV_user123`
+
+      **MCP action (retry)**
+      - Tool: `mcp_sqlcl_-_sql_d_run-sql`
+
+      **Output (successful)**
+      - `USER_TABLES = 6`
+      - `ALL_TABLES = 114`
+
+      ### 3) Insert 10 Mock Rows into EMPLOYEES
+
+      **User input**
+      - "can you insert 10 rows mock data in employees table"
+
+      **MCP validation steps**
+      - Tool: `mcp_sqlcl_-_sql_d_run-sql`
+      - Checked columns in `USER_TAB_COLUMNS` for `EMPLOYEES`
+      - Checked constraints in `USER_CONSTRAINTS` / `USER_CONS_COLUMNS`
+        - Found primary key on `EMPLOYEE_ID`
+      - Checked current data
+        - `MAX_EMPLOYEE_ID = 0`
+        - `CURRENT_ROWS = 0`
+
+      **MCP insert step**
+      - Tool: `mcp_sqlcl_-_sql_d_run-sql`
+      - Executed `INSERT ALL ... SELECT 1 FROM dual`
+
+      **Output**
+      - `10 rows inserted`
+
+      **Commit handling**
+      - `COMMIT` in `run-sql` returned `Unknown Command`
+      - Tool switched to: `mcp_sqlcl_-_sql_d_run-sqlcl`
+      - `commit;` completed successfully
+
+      ### 4) Show All Records
+
+      **User input**
+      - "show me the all records"
+
+      **MCP action**
+      - Tool: `mcp_sqlcl_-_sql_d_run-sql`
+      - Query: `SELECT ... FROM employees ORDER BY employee_id`
+
+      **Output**
+      - `10 rows selected`
+      - Rows returned with `EMPLOYEE_ID` 1 to 10
+    languageId: markdown
+  - kind: 1
+    value: >-
+      ## Use Case Summary
+
+
+      ### Business/Developer Goal
+
+      Use MCP-enabled chatbot commands to perform database operations quickly:
+      discover connections, inspect metadata, insert sample data, and verify
+      records.
+
+
+      ### Result
+
+      - Connection discovery completed
+
+      - Active connection established
+
+      - Table counts retrieved
+
+      - `EMPLOYEES` mock data inserted and committed
+
+      - Full record verification completed
+
+
+      ### Key MCP Behavior Notes
+
+      - Always ensure a DB connection is active before `run-sql`.
+
+      - If SQL transaction commands are not accepted in `run-sql`, use
+      `run-sqlcl` for SQLcl command execution.
+
+      - Validate table structure and constraints before bulk inserts to avoid
+      key violations.
+
+
+      ### Reusable Query Snippets
+
+      ```sql
+
+      -- Count visible tables
+
+      SELECT 'USER_TABLES' AS scope, COUNT(*) AS table_count FROM USER_TABLES
+
+      UNION ALL
+
+      SELECT 'ALL_TABLES' AS scope, COUNT(*) AS table_count FROM ALL_TABLES;
+
+
+      -- Show all employees
+
+      SELECT employee_id, first_name, last_name, email, hire_date, job_id,
+      salary
+
+      FROM employees
+
+      ORDER BY employee_id;
+
+      ```
+
+
+      ### Final State Captured
+
+      - `EMPLOYEES` contains 10 committed rows.
+
+      - Data retrieval confirmed via ordered select.
+    languageId: markdown
+  - kind: 1
+    value: |-
+      Reference:
+      - [Natural Language Prompts for Oracle Database Operations](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/example-use-cases-and-prompts.html)
+    languageId: markdown

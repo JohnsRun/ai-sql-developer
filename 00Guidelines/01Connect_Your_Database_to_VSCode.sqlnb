@@ -57,6 +57,7 @@ cells:
     languageId: markdown
   - kind: 2
     value: |-
+      -- Create a new schema
       CREATE USER dev IDENTIFIED BY dev123;
 
       GRANT CONNECT, RESOURCE TO dev;

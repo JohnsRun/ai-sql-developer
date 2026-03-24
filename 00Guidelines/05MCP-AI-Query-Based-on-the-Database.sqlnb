@@ -186,11 +186,12 @@ cells:
 
         FROM DBTOOLS$MCP_LOG
        ORDER BY CREATED_ON DESC
-       FETCH FIRST 50 ROWS ONLY;
+       FETCH FIRST 5 ROWS ONLY;
 
     languageId: oracle-sql
   - kind: 2
     value: |-
+      -- Error details for failed calls
       SELECT ID,
              MCP_CLIENT,
              END_POINT_NAME,

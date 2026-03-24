@@ -166,6 +166,73 @@ cells:
       - Data retrieval confirmed via ordered select.
     languageId: markdown
   - kind: 1
+    value: ""
+    languageId: markdown
+  - kind: 1
+    value: |+
+      ## Audit 
+
+    languageId: markdown
+  - kind: 2
+    value: |+
+      -- Log Table
+      SELECT ID,
+             MCP_CLIENT,
+             MODEL,
+             END_POINT_NAME,
+             CREATED_ON,
+             UPDATED_ON
+             ,LOG_MESSAGE
+
+        FROM DBTOOLS$MCP_LOG
+       ORDER BY CREATED_ON DESC
+       FETCH FIRST 50 ROWS ONLY;
+
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      SELECT ID,
+             MCP_CLIENT,
+             END_POINT_NAME,
+             CREATED_ON,
+             JSON_VALUE(LOG_MESSAGE, '$.status') AS status,
+             JSON_VALUE(LOG_MESSAGE, '$.error_code') AS error_code,
+             JSON_VALUE(LOG_MESSAGE, '$.error_message') AS error_message
+        FROM DBTOOLS$MCP_LOG
+       WHERE JSON_VALUE(LOG_MESSAGE, '$.status') = 'FAILED'
+       ORDER BY CREATED_ON DESC;
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      -- Activity by endpoint:
+
+      SELECT END_POINT_NAME,
+             COUNT(*) AS call_count
+        FROM DBTOOLS$MCP_LOG
+       GROUP BY END_POINT_NAME
+       ORDER BY call_count DESC;
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      -- Slow operations
+      SELECT ID,
+             END_POINT_NAME,
+             CREATED_ON,
+             JSON_VALUE(LOG_MESSAGE, '$.duration_ms') AS duration_ms
+        FROM DBTOOLS$MCP_LOG
+       WHERE TO_NUMBER(JSON_VALUE(LOG_MESSAGE, '$.duration_ms')) > 1000
+       ORDER BY TO_NUMBER(JSON_VALUE(LOG_MESSAGE, '$.duration_ms')) DESC;
+    languageId: oracle-sql
+  - kind: 2
+    value: |-
+      #
+      CREATE INDEX IX_MCP_LOG_CREATED_ON
+          ON DBTOOLS$MCP_LOG (CREATED_ON);
+
+      CREATE INDEX IX_MCP_LOG_CLIENT_EP
+          ON DBTOOLS$MCP_LOG (MCP_CLIENT, END_POINT_NAME, CREATED_ON);
+    languageId: oracle-sql
+  - kind: 1
     value: |-
       Reference:
       - [Natural Language Prompts for Oracle Database Operations](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/example-use-cases-and-prompts.html)

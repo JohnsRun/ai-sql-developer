@@ -41,6 +41,10 @@ Current skill:
   - Upstream/downstream tracing
   - Mechanism analysis
   - Strict line-link validation and output format requirements
+- `db-select/SKILL.md`
+  - Oracle MCP query skill for natural-language database Q&A
+  - Read-only mode (`SELECT`/`WITH` only)
+  - Blocks destructive and non-query operations (`DROP`, `DELETE`, `TRUNCATE`, etc.)
 
 Use skills for complex domain logic that requires step-by-step methodology.
 

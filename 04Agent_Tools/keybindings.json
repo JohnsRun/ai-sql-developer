@@ -1,0 +1,37 @@
+// Place your key bindings in this file to override the defaults
+[
+        {
+      "key": "ctrl+cmd+p",
+      "command": "workbench.action.chat.openPlan"
+    },
+    {
+        "key": "ctrl+cmd+i",
+        "command": "workbench.action.chat.openAsk"
+    },
+{
+    "key": "cmd+escape",
+      "command": "workbench.action.chat.startVoiceChat"
+},
+    {
+  "key": "cmd+shift+m",
+  "command": "workbench.action.toggleMaximizedAuxiliaryBar"
+},
+        {
+    "key": "cmd+o cmd+p",
+    "command": "workbench.action.files.openFileFolder"
+    },
+    {
+        "key": "cmd+i cmd+i",
+        "command": "python.createTerminal"
+    },
+    {
+        "key": "alt+cmd",
+        "command": "workbench.action.debug.run",
+        "when": "debuggersAvailable && debugState != 'initializing'"
+    },
+    {
+        "key": "ctrl+f5",
+        "command": "-workbench.action.debug.run",
+        "when": "debuggersAvailable && debugState != 'initializing'"
+    }
+]

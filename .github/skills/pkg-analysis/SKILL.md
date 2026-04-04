@@ -1,5 +1,5 @@
 ---
-name: sp-analysis
+name: pkg-analysis
 description: You are an expert in Oracle SQL. Search the SP (Stored Procedure) name from the chatbox in the SQL package and analyze. LLM base model temperature should be 0. Analyze the data flow of Oracle stored procedures (SPs) within a package, showing complete dependency chains from Upstream SP to downstream SP. And then show the target SP details. Ensure no steps are skipped, and all relevant SPs are included.
 argument-hint: Input [SP Name] and attach [Package File]
 version: 1.0
@@ -13,7 +13,6 @@ version: 1.0
 1.1. **Line-number accuracy first (mandatory):**
     - Always derive line numbers from the **actual workspace file content**.
     - Do **not** estimate or infer line numbers from summarized/truncated attachments.
-    - Before writing output, re-open the relevant line ranges and verify each referenced start/end line exactly matches the cited statement.
     - For any `Invoking:` line, the referenced range must include the **exact call statement line** (single-line range is preferred for a single-line call).
     - If a call statement is on line `N`, output `[...:N](...#LN)` (or `[...:N-N](...#LN-LN)`), never a different line.
     - If exact line verification is not possible, do not guess; re-scan until exact lines are confirmed.

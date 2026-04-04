@@ -1,0 +1,218 @@
+cells:
+  - kind: 1
+    value: "# Customize Copilot: Specialize AI to Work for You"
+    languageId: markdown
+  - kind: 1
+    value: |-
+      ## When To Use AI in SDLC
+
+      ```md
+       1. Requirements Alignment
+       2. Context Management
+       3. Security & Compliance
+       4. Progressive Code Generation
+       5. Knowledge Management (Indexing)
+       6. Legacy Modernization & Maintenance
+       7. Quality & Compliance (Testing)
+      ```
+    languageId: markdown
+  - kind: 1
+    value: |-
+      ## Key Folders
+
+      ```md
+      - .github/: Config files for AI Agent behavior in VS Code .
+      - .vscode/:  Config files for VS Code
+      - 00Guidelines/: Guidelines for new users or recalling history.
+      - 01Context_Docs/: Business and project background documents.
+      - 02Development_Zone/: Oracle SQL packages and test scripts.
+      - 03Agent_Memory/: AI-generated outputs and notes.
+      - 04Deployment/: The delivery after the deployment.
+      - Archive/: Archive for cerntail items.
+      ```
+    languageId: markdown
+  - kind: 1
+    value: >-
+      ## Config Files
+
+
+      The `.github/` folder contains Copilot configuration for this workspace. 
+
+
+      Current items are: `copilot-instructions.md`, `prompts/`, `skills/`, and
+      `instructions/`.
+    languageId: markdown
+  - kind: 1
+    value: >+
+      
+      **Use a `.github/copilot-instructions.md` file**
+
+
+      [This file](.github/copilot-instructions.md) is automatically applied to
+      chat requests in the workspace.
+
+
+      Use `/init` to generate or update this file.
+
+
+      Use copilot-instructions.md for:
+
+
+      - Coding style and naming conventions that apply across the project
+
+      - Technology stack declarations and preferred libraries
+
+      - Architectural patterns to follow or avoid
+
+      - Security requirements and error handling approaches
+
+      - Documentation standards
+
+
+    languageId: markdown
+  - kind: 1
+    value: |-
+      **Use `.instructions.md` files**
+
+      Create file-scoped instructions in `.github/instructions/*.instructions.md`. 
+
+      They are applied dynamically based on the files or tasks being handled.
+
+      [sql-script-terminator.instructions.md](.github/instructions/sql-script-terminator.instructions.md) is for the files ending in .sql, .pkb, or .pkg.
+
+      Type `/create-instructions`, add a description of the instructions you want to generate.
+
+
+      Use .instructions.md files for:
+
+      - Different conventions for frontend vs. backend code
+      - Language-specific guidelines in a monorepo
+      - Framework-specific patterns for specific modules
+      - Specialized rules for test files or documentation
+    languageId: markdown
+  - kind: 1
+    value: >-
+      **Use `.prompt.md` files**
+
+
+      Prompt files, also known as slash commands, let you simplify prompting for
+      common tasks by encoding them as standalone Markdown files that you can
+      invoke directly in chat.
+
+
+      Prompt files are stored under `.github/prompts/`. Current prompt files
+      are:
+
+
+      | Command | Description | Example |
+
+      |---|---|---|
+
+      | `/prompt-coach` | Convert user statements into an AI-ready prompt by
+      translating Chinese to English when needed, removing noise, and rewriting
+      the request in a short structured format. | `/prompt-coach ## #2 Config
+      Files 幫我修正文檔呢部分。` |
+
+      | `/save-to-md` | Save generated output as a Markdown file under
+      `../03Agent_Memory/` using the `Output_[object].md` naming format and
+      preserve markdown formatting. | `/save-to-md Save this package analysis as
+      markdown.` |
+
+      | `/save-to-nb` | Save generated output as a `.sqlnb` notebook under
+      `AI_Agent_4_PLSQL/03Agent_Memory/`, with the first cell stored as markdown
+      for preview. | `/save-to-nb Save this result as a SQL notebook.` |
+
+      | `/magic-list` | Inspect only the `.github/` directory and return one
+      3-column markdown table listing slash commands, agent definitions, and
+      hook-related files. | `/magic-list` |
+
+
+
+      To create a prompt file in user data, use the Chat Customizations editor
+      or use the Chat: New Prompt File command.
+    languageId: markdown
+  - kind: 1
+    value: >-
+      **Use `SKILL.md` Files**
+
+
+      Agent skills enable specialized capabilities and workflows that can
+      include scripts, examples, and other resources.
+
+
+      Agent skills are stored in `.github/skills/[skill-name]/SKILL.md` and are
+      loaded when relevant for specialized tasks.
+
+
+      Current active skill folders include:
+
+
+      | Skill | Description | Example |
+
+      |---|---|---|
+
+      | `/db-audit` | Use Oracle MCP to inspect `DBTOOLS$MCP_LOG` with read-only
+      SQL for recent log entries, failed call details, endpoint activity, and
+      slow operations only. | `/db-audit Show the latest MCP log rows` |
+
+      | `/find-skills` | Help users discover and install agent skills from the
+      skills ecosystem when they ask for a capability, workflow, or specialized
+      task support. | `/find-skills Find a skill for PR review` |
+
+      | `/pkg-analysis` | Analyze a target stored procedure inside an attached
+      Oracle package, showing complete upstream and downstream dependency chains
+      and a mechanism analysis with exact line references. | `/pkg-analysis
+      Analyze get_hours and attach JTA_Packages.sql` |
+
+      | `/sql-lineage` | Trace the lineage of a field or variable inside an
+      attached PL/SQL package, showing upstream sources, transformation steps,
+      and downstream destinations as an ASCII graph. | `/sql-lineage Trace
+      v_salary in get_employee_pay and attach the package file` |
+    languageId: markdown
+  - kind: 1
+    value: |-
+      **Model Context Protocol (MCP)**
+
+      MCP is an open standard for connecting AI models to external tools and services. In Visual Studio Code, MCP servers provide tools for tasks like file operations, databases, or external APIs. MCP servers can also provide resources, prompts, and interactive apps.
+
+      [The GitHub MCP Server](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) connects AI tools directly to GitHub's platform. This gives AI agents, assistants, and chatbots the ability to read repositories and code files, manage issues and PRs, analyze code, and automate workflows. All through natural language interactions.
+
+      [The SQLcl MCP Server](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/sqlcl-mcp-server.html)  extends Oracle SQLcl to support MCP-based communication. It enables AI applications to interact with Oracle databases using the standardized MCP interface, giving those applications a structured way to discover and use your databases. 
+
+      In existing repository, we can use slash commands to trigger the MCP servers below.
+
+      | Command | Description | Example |
+      |---|---|---|
+      | `/github-sql` | Use GitHub MCP to work on Oracle SQL tasks in `JohnsRun/ai-sql-developer` using agent mode and `GPT-5.3-Codex`. | `/github-sql Review the package structure and summarize the Oracle SQL assets.` |
+      | `/db-select` | Run Oracle read-only queries in strict `SELECT` or `WITH` mode only, using Oracle MCP safety rules and returning results as a markdown table. | `/db-select Show the latest 10 rows from EMPLOYEES in DEV.` |
+      | `/db-operation` | Handle Oracle database operations with explicit approval required before running any non-read-only SQL. | `/db-operation Add one test row to EMPLOYEES in DEV after showing me the exact SQL.` |
+
+      Remark: Oracle provides many [examples and prompts]((https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/example-use-cases-and-prompts.html)) for this server.
+    languageId: markdown
+  - kind: 1
+    value: >-
+      **Agent Hooks**
+
+
+      Hooks enable you to automate workflows, enforce security policies,
+      validate operations, and integrate with external tools.
+    languageId: markdown
+  - kind: 1
+    value: >-
+      **Microsoft Extension**
+
+
+      `VS Code Speech` brings speech-to-text and other voice capabilities to VS
+      Code.
+
+
+      ![alt text](image-7.png)
+    languageId: markdown
+  - kind: 1
+    value: |-
+      **Reference**:
+      - [Use custom instructions in VS Code
+      ](https://code.visualstudio.com/docs/copilot/customization/custom-instructions#_use-instructionsmd-files)
+
+      - [Use Agent Skills in VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
+    languageId: markdown

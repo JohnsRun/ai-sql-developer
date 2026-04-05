@@ -1,0 +1,19 @@
+cells:
+  - kind: 1
+    value: |-
+      **Model Context Protocol (MCP)**
+
+      MCP is an open standard for connecting AI models to external tools and services. In Visual Studio Code, MCP servers provide tools for tasks like file operations, databases, or external APIs. MCP servers can also provide resources, prompts, and interactive apps.
+
+      [The GitHub MCP Server](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) connects AI tools directly to GitHub's platform. This gives AI agents, assistants, and chatbots the ability to read repositories and code files, manage issues and PRs, analyze code, and automate workflows. All through natural language interactions.
+
+      [The SQLcl MCP Server](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/sqlcl-mcp-server.html)  extends Oracle SQLcl to support MCP-based communication. It enables AI applications to interact with Oracle databases using the standardized MCP interface, giving those applications a structured way to discover and use your databases. 
+
+      In existing repository, we can use slash commands to trigger the MCP servers below.
+
+      | Command | Description | Example |
+      |---|---|---|
+
+
+      Remark: Oracle provides many [examples and prompts]((https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/example-use-cases-and-prompts.html)) for this server.
+    languageId: markdown

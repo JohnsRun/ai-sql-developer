@@ -70,10 +70,13 @@ Prompt files are stored under `.github/prompts/`. Current prompt files are:
 
 | Command | Description | Example |
 |---|---|---|
-| `/prompt-coach` | Convert user statements into an AI-ready prompt by translating Chinese to English when needed, removing noise, and rewriting the request in a short structured format. | `/prompt-coach ## #2 Config Files 幫我修正文檔呢部分。` |
+| `/github-sql` | Use GitHub MCP to work on Oracle SQL tasks in `JohnsRun/ai-sql-developer` using agent mode and `GPT-5.3-Codex`. | `/github-sql Review the package structure and summarize the Oracle SQL assets.` |
+| `/prompt-coach` | Convert user statements into an AI-ready prompt by translating Chinese to English when needed, removing noise, and rewriting the request in a short structured format. | `/prompt-coach ## #2 Config Files 幫我修正文檔部分,check grammar。` |
 | `/save-to-md` | Save generated output as a Markdown file under `../03Agent_Memory/` using the `Output_[object].md` naming format and preserve markdown formatting. | `/save-to-md Save this package analysis as markdown.` |
 | `/save-to-nb` | Save generated output as a `.sqlnb` notebook under `AI_Agent_4_PLSQL/03Agent_Memory/`, with the first cell stored as markdown for preview. | `/save-to-nb Save this result as a SQL notebook.` |
 | `/magic-list` | Inspect only the `.github/` directory and return one 3-column markdown table listing slash commands, agent definitions, and hook-related files. | `/magic-list` |
+| `/db-select` | Run Oracle read-only queries in strict `SELECT` or `WITH` mode only, using Oracle MCP safety rules and returning results as a markdown table. | `/db-select Show the latest 10 rows from EMPLOYEES in DEV.` |
+| `/db-operation` | Handle Oracle database operations with explicit approval required before running any non-read-only SQL. | `/db-operation Add one test row to EMPLOYEES in DEV after showing me the exact SQL.` |
 
 To create a prompt file in user data, use the Chat Customizations editor or the Chat: New Prompt File command.
 
@@ -92,23 +95,6 @@ Current active skill folders include:
 | `/pkg-analysis` | Analyze a target stored procedure inside an attached Oracle package, showing complete upstream and downstream dependency chains and a mechanism analysis with exact line references. | `/pkg-analysis Analyze get_hours and attach JTA_Packages.sql` |
 | `/sql-lineage` | Trace the lineage of a field or variable inside an attached PL/SQL package, showing upstream sources, transformation steps, and downstream destinations as an ASCII graph. | `/sql-lineage Trace v_salary in get_employee_pay and attach the package file` |
 
-**Model Context Protocol (MCP)**
-
-MCP is an open standard for connecting AI models to external tools and services. In Visual Studio Code, MCP servers provide tools for tasks like file operations, databases, or external APIs. MCP servers can also provide resources, prompts, and interactive apps.
-
-[The GitHub MCP Server](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) connects AI tools directly to GitHub's platform. This gives AI agents, assistants, and chatbots the ability to read repositories and code files, manage issues and PRs, analyze code, and automate workflows through natural language interactions.
-
-[The SQLcl MCP Server](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/sqlcl-mcp-server.html) extends Oracle SQLcl to support MCP-based communication. It enables AI applications to interact with Oracle databases using the standardized MCP interface.
-
-In this repository, slash commands can trigger the MCP workflows below.
-
-| Command | Description | Example |
-|---|---|---|
-| `/github-sql` | Use GitHub MCP to work on Oracle SQL tasks in `JohnsRun/ai-sql-developer` using agent mode and `GPT-5.3-Codex`. | `/github-sql Review the package structure and summarize the Oracle SQL assets.` |
-| `/db-select` | Run Oracle read-only queries in strict `SELECT` or `WITH` mode only, using Oracle MCP safety rules and returning results as a markdown table. | `/db-select Show the latest 10 rows from EMPLOYEES in DEV.` |
-| `/db-operation` | Handle Oracle database operations with explicit approval required before running any non-read-only SQL. | `/db-operation Add one test row to EMPLOYEES in DEV after showing me the exact SQL.` |
-
-Remark: Oracle provides many [examples and prompts](https://docs.oracle.com/en/database/oracle/sql-developer-vscode/25.3/sqdnx/example-use-cases-and-prompts.html) for this server.
 
 **Agent Hooks**
 

@@ -1,9 +1,10 @@
 # macOS
 .DS_Store
-
+Run.sh
 # VS Code
 .vscode/
 .agents/skills
+.venv
 
 00Ad_hoc/
 00Archive/

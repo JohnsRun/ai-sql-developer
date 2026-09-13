@@ -2,6 +2,7 @@
 .DS_Store
 Run.sh
 # VS Code
+*/.env
 .vscode/
 .agents/skills
 .venv

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>动嘴就能写代码：语音对话驱动的 AI 编程</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<style>
+:root {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --ink: #1f2933;
+    --muted: #52606d;
+    --line: #d9e2ec;
+    --accent: #0f4c81;
+    --accent-soft: #e6eff7;
+    --shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(15, 76, 129, 0.08), transparent 65%),
+        radial-gradient(900px 500px at 100% 0%, rgba(31, 41, 51, 0.06), transparent 70%),
+        var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+}
+
+body {
+    max-width: 920px;
+    margin: 32px auto;
+    padding: 0 20px;
+}
+
+main,
+article,
+body > * {
+    animation: fadeUp 420ms ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: #102a43;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 2rem;
+    letter-spacing: 0.01em;
+}
+
+h2 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.35rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+p,
+ul,
+ol,
+blockquote {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin: 0.7rem 0;
+    padding: 0.85rem 1rem;
+}
+
+ul,
+ol {
+    padding-left: 2.1rem;
+}
+
+li + li {
+    margin-top: 0.35rem;
+}
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    background: linear-gradient(90deg, var(--accent-soft), #ffffff 62%);
+    color: #243b53;
+    font-style: normal;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    margin: 1.4rem 0;
+    background: linear-gradient(to right, transparent, var(--line), transparent);
+}
+
+code {
+    font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.92em;
+    background: #f0f4f8;
+    border: 1px solid #d9e2ec;
+    border-radius: 6px;
+    padding: 0.12em 0.4em;
+}
+
+pre {
+    overflow-x: auto;
+    background: #111827;
+    color: #e5edf5;
+    border-radius: 12px;
+    border: 1px solid #334e68;
+    padding: 1rem;
+}
+
+pre code {
+    background: transparent;
+    border: none;
+    color: inherit;
+    padding: 0;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(15, 76, 129, 0.35);
+}
+
+a:hover {
+    border-bottom-color: var(--accent);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+th,
+td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.7rem 0.85rem;
+    text-align: left;
+}
+
+th {
+    color: #102a43;
+    background: #f0f4f8;
+    font-weight: 600;
+}
+
+@media (max-width: 720px) {
+    body {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+
+    h1 {
+        font-size: 1.65rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media print {
+    html,
+    body {
+        background: #ffffff;
+    }
+
+    p,
+    ul,
+    ol,
+    blockquote,
+    table {
+        box-shadow: none;
+        border-color: #d5d8dc;
+        break-inside: avoid;
+    }
+
+    a {
+        color: #000000;
+        border-bottom: none;
+    }
+}
+
+/* Code block styling for pandoc-generated content */
+div.sourceCode {
+    background: #111827 !important;
+    border: 1px solid #334e68 !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    overflow-x: auto !important;
+}
+pre.sourceCode {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+code.sourceCode {
+    background: transparent !important;
+    color: #e5edf5 !important;
+    border: none !important;
+    padding: 0 !important;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">动嘴就能写代码：语音对话驱动的 AI 编程</h1>
+</header>
+<h2 id="github-copilot-vibe-coding-实践分享">GitHub Copilot Vibe Coding
+实践分享</h2>
+<hr />
+<h4 id="分享内容">分享内容</h4>
+<ul>
+<li>Vibe Coding</li>
+<li>Instructions</li>
+<li>Agent</li>
+<li>Copilot Approvals And Permissions</li>
+<li>AI Memory</li>
+</ul>
+<h1 id="数据工程师的日常工作">数据工程师的日常工作</h1>
+<p>每天都在做：</p>
+<ul>
+<li>编写 SQL</li>
+<li>开发 Stored Procedure</li>
+<li>数据同步</li>
+<li>ETL 开发</li>
+<li>数据库运维</li>
+<li>数据分析</li>
+</ul>
+<hr />
+<p>传统开发模式</p>
+<div class="mermaid">graph LR
+    A[需求] --> D[写code]
+    D --> E[调试]
+    E -->D</div>
+<hr />
+<p>AI 驱动模式</p>
+<div class="mermaid">graph LR
+    A[需求] --> B[语音对话]
+    B --> C[AI生成code]
+    C --> D[审查和调试]
+    D -->B</div>
+<hr />
+<p>开发者身份转变</p>
+<div class="mermaid">graph LR
+A{Code Writer}-->B{AI Reviewer}</div>
+<hr />
+<h1 id="什么是-vibe-coding">什么是 Vibe Coding</h1>
+<p>通过自然语言与 AI 交流，由 AI 完成开发任务。</p>
+<p><strong>Option 1</strong></p>
+<p><a
+href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-speech-language-pack-zh-cn">VS
+Code Speech Extension</a></p>
+<figure>
+<img src="image/vibe-coding/1782010150610.png"
+alt="微软出品VS Code Speech支持粤语、国语和英语等多种语言。" />
+<figcaption aria-hidden="true">微软出品VS Code
+Speech支持粤语、国语和英语等多种语言。</figcaption>
+</figure>
+<p><strong>Option 2</strong> <a
+href="https://code.visualstudio.com/docs/configure/accessibility/voice#_use-built-in-dictation">Built-in
+dictation in VS Code</a></p>
+<figure>
+<img src="image/vibe-coding/Built-in.png" alt="Built-in dictation" />
+<figcaption aria-hidden="true">Built-in dictation</figcaption>
+</figure>
+<hr />
+<h3 id="数据库vibe-coding应用场景">数据库vibe coding应用场景</h3>
+<p>工程师：</p>
+<blockquote>
+<p>帮我写一个上月保单续保率SQL，按区域分组</p>
+</blockquote>
+<p>AI：</p>
+<ul>
+<li>编写 SQL</li>
+<li>添加注释</li>
+<li>性能优化 SQL</li>
+</ul>
+<hr />
+<p>工程师：</p>
+<blockquote>
+<p>帮我写个文档介绍这个GitHub Repo</p>
+</blockquote>
+<p>AI：</p>
+<ul>
+<li>解析项目结构，整理项目架构</li>
+<li>结合上下文分析代码规范</li>
+<li>输出md/html文档</li>
+</ul>
+<hr />
+<p>工程师：</p>
+<blockquote>
+<p>扫描全部logs并整理error报告，要求报告能链接到每个log文件</p>
+</blockquote>
+<p>AI：</p>
+<ul>
+<li>递归扫描所有 log 目录和文件</li>
+<li>提取错误信息、时间戳分类</li>
+<li>生成结构化报告（按错误类型、时间线、严重级别）</li>
+<li>输出 HTML/Markdown 文档，每条错误包含源文件链接</li>
+</ul>
+<hr />
+<p>工程师：</p>
+<blockquote>
+<p>实现一行代码自动创建PR，创建后自动打开网页</p>
+</blockquote>
+<p>AI:</p>
+<ul>
+<li>查阅GitHub CLI文档</li>
+<li>结合workspace和上下文获取repo名字</li>
+<li>生成使用例子</li>
+</ul>
+<hr />
+<p>工程师：</p>
+<blockquote>
+<p>/prompt-coach 我有一大堆模糊的想法，你帮我整理，并且结构化输出</p>
+</blockquote>
+<p>AI：</p>
+<ul>
+<li>剔除口头禅和无用信息</li>
+<li>结构化整理，转换成更适合执行的 Prompt</li>
+</ul>
+<hr />
+<h1 id="企业落地面临的问题">企业落地面临的问题</h1>
+<h2 id="为什么-ai-有时候并不好用">为什么 AI 有时候并不好用？</h2>
+<h3 id="原因一缺乏上下文">原因一：缺乏上下文</h3>
+<p>AI 不知道项目背景：</p>
+<ul>
+<li>团队编码规范</li>
+<li>项目架构</li>
+<li>技术栈标准</li>
+<li>…</li>
+</ul>
+<hr />
+<h2 id="典型案例">典型案例</h2>
+<p>同样一句 Prompt生成的代码，在2个类似的项目</p>
+<ul>
+<li>项目A 输出运行正常 ✅</li>
+<li>项目B 输出运行报错 ❌</li>
+</ul>
+<hr />
+<h3 id="原因二不了解业务流程">原因二：不了解业务流程</h3>
+<p>刚落地的 AI 不理解：</p>
+<ul>
+<li>开发工具配置流程</li>
+<li>测试开发流程</li>
+<li>CI/CD流程</li>
+<li>…</li>
+</ul>
+<hr />
+<h2 id="典型案例-1">典型案例</h2>
+<p>AI生成的代码独立于Jira和GitHub issue中的信息。
+需要截图上传文档/认为二次输入背景说明，才能完成任务。</p>
+<hr />
+<h3 id="原因三误操作风险">原因三：误操作风险</h3>
+<p>AI 可能生成：</p>
+<pre class="shell"><code>rm -rf</code></pre>
+<p>或者：</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> POLICY_MASTER;</span></code></pre></div>
+<hr />
+<h2 id="典型案例-2">典型案例</h2>
+<p>OpenAI失控AI智能体入侵了自家系统，
+试图在测试中作弊或获得更大的行动自由。</p>
+<hr />
+<h1 id="企业级-ai-四件套">企业级 AI 四件套</h1>
+<h2 id="企业级-github-copilot-的核心解决方案">企业级 GitHub Copilot
+的核心解决方案</h2>
+<table>
+<thead>
+<tr>
+<th>痛点</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不懂项目背景</td>
+<td>Instructions</td>
+</tr>
+<tr>
+<td>不懂业务规则</td>
+<td>Agent</td>
+</tr>
+<tr>
+<td>误删数据</td>
+<td>Approvals &amp; Permissions</td>
+</tr>
+<tr>
+<td>默会知识难以书面表达</td>
+<td>AI Memory</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="解决方案-1instructions">解决方案 1：Instructions</h1>
+<p>Custom instructions enable you to define common guidelines and rules
+that automatically influence how AI generates code and handles other
+development tasks</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 38%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>特征</th>
+<th>copilot-instructions</th>
+<th>file-based instructions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>作用范围</strong></td>
+<td>整个workspace的对话</td>
+<td>特定文件的对话（e.g. sql, pkg, &amp;pkb)</td>
+</tr>
+<tr>
+<td><strong>目的</strong></td>
+<td>让AI理解项目背景和规范</td>
+<td>让AI理解特定语言的规范</td>
+</tr>
+<tr>
+<td><strong>创建方式</strong></td>
+<td><code>/init</code> <指令></td>
+<td><code>/create-instructions</code> <指令></td>
+</tr>
+<tr>
+<td><strong>触发方式</strong></td>
+<td>默认始终加载</td>
+<td>根据文件类型、路径或匹配规则自动加载</td>
+</tr>
+<tr>
+<td><strong>文件位置</strong></td>
+<td>.github/copilot-instructions.md</td>
+<td>.github/instructions/*.instructions.md</td>
+</tr>
+<tr>
+<td><strong>典型内容</strong></td>
+<td>架构说明、命名规范、开发流程、代码风格</td>
+<td>SQL规范、数据库连接规范、测试用例生成规范等</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prompt for Creating Python File-based
+Instruction</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode md"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>/create-instructions  我需要创建一个python文件的规范。 我要求所有在python里面要连接数据库必须要用到oracle d b这个包</span></code></pre></div>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><p><a
+href=".github/copilot-instructions.md">copilot-instructions.md</a></p></li>
+<li><p><a
+href=".github/instructions/sql-script-standard.instructions.md">sql-script-standard.instructions.md</a></p></li>
+</ul>
+<h1 id="解决方案-2agent">解决方案 2：Agent</h1>
+<h2 id="prompt-agent">Prompt ≠ Agent</h2>
+<p>很多人认为</p>
+<blockquote>
+<p>text 把Prompt写长一点 = 专家能力</p>
+</blockquote>
+<p>实际上：</p>
+<p><code>Agent  = Domain Knowledge + Workflow + Best Practice + Tools</code></p>
+<hr />
+<p>目标：</p>
+<blockquote>
+<p>让AI是进行某个专业领域的工作。</p>
+</blockquote>
+<hr />
+<h1 id="database-agent-示例">Database Agent 示例</h1>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 37%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr>
+<th>特征</th>
+<th>DB_Query_Agent</th>
+<th>DB_Action_Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>领域约束</strong></td>
+<td>限制操作类型（只读）</td>
+<td>限制操作类型（增删改） + 限制执行流程（确认机制）</td>
+</tr>
+<tr>
+<td><strong>安全网</strong></td>
+<td>数据字典 + 结构校验</td>
+<td>生成-执行两步式</td>
+</tr>
+<tr>
+<td><strong>学习价值</strong></td>
+<td>展示<strong>精确边界控制</strong> （白名单方式）</td>
+<td>展示<strong>多层防护体系</strong> （流程+确认）</td>
+</tr>
+<tr>
+<td><strong>业务适配</strong></td>
+<td>为读操作专业化定制</td>
+<td>为写操作设计安全体系</td>
+</tr>
+<tr>
+<td><strong>用例</strong></td>
+<td><code>查员工表中,成龙的工资</code> <br>
+<code>修改员工表中成龙的工资为20000</code></td>
+<td><code> 修改员工表中成龙的工资为20000</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="通过-db_query_agent-查询数据库">通过 DB_Query_Agent
+查询数据库</h2>
+<div class="mermaid">flowchart LR
+    Agent[DB_Query_Agent]
+    Agent --> Dictionary[数据字典\n业务术语映射]
+    Dictionary --> Guard{SQL 安全校验\n仅 SELECT / WITH}
+    Guard -->|通过| Cli[db_connect_query.py]
+    Guard -->|拒绝| Clarify[拒绝或请求澄清]
+    Cli --> Environment{环境路由}
+    Environment -->|默认| Dev[(DEV 数据库)]
+    Environment -->|UAT 前缀| Uat[(UAT 数据库)]
+    Dev --> Result[Markdown 查询结果]
+    Uat --> Result
+    Result --> Agent</div>
+<h2 id="通过-db_action_agent-修改数据库">通过 DB_Action_Agent
+修改数据库</h2>
+<div class="mermaid">flowchart LR
+    Agent[DB_Action_Agent]
+    Agent --> Dictionary[数据字典\n业务术语映射]
+    Dictionary --> Guard{SQL 安全校验\n允许 DML，必须有 WHERE}
+    Guard -->|通过| Preview[展示精确 SQL\n等待明确批准]
+    Guard -->|拒绝| Clarify[拒绝或请求澄清]
+    Preview --> Approval{用户批准?}
+    Approval -->|否| Stop[不执行]
+    Approval -->|是，SQL 不变| Cli[db_connect_action.py]
+    Cli --> Environment{环境路由}
+    Environment -->|默认| Dev[(DEV 数据库)]
+    Environment -->|UAT 前缀| Uat[(UAT 数据库)]
+    Dev --> Result[执行结果]
+    Uat --> Result
+    Result --> Agent</div>
+<h1 id="解决方案-3copilot-approvals-and-permissions">解决方案 3：Copilot
+Approvals And Permissions</h1>
+<p>Permission levels are the high-level control for how much autonomy
+the agent has during a session.</p>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr>
+<th>Permission level</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Default Permission</strong></td>
+<td>Uses your configured approval settings. Tools
+that<strong>require</strong> approval show a confirmation dialog before
+they run. When in doubt, the agent asks clarifying questions.</td>
+</tr>
+<tr>
+<td><strong>Allow All</strong></td>
+<td>Auto-approves all tool calls <strong>without</strong> showing
+confirmation dialogs. When in doubt, <strong>the agent asks clarifying
+questions.</strong></td>
+</tr>
+<tr>
+<td><strong>Autopilot</strong></td>
+<td>Auto-approves all tool calls <strong>without</strong> showing
+confirmation dialogs. When questions arise, <strong>the agent
+automatically responds</strong> to clarifying questions.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="解决方案-4-ai-memory">解决方案 4: AI Memory</h1>
+<p>The memory tool is a built-in agent tool that allows agents to save
+and recall notes as they work</p>
+<h2 id="memory-tool">Memory tool</h2>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 26%" />
+<col style="width: 27%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Persists<br />across <br />sessions</th>
+<th>Persists<br />across <br />workspaces</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>记住SQL处理日期时默认使用”YYYY-MM-DD”格式</td>
+</tr>
+<tr>
+<td><strong>Repository</strong></td>
+<td>Yes</td>
+<td>No</td>
+<td>记住这个项目的建表语句只使用Create TABLE </td>
+</tr>
+<tr>
+<td><strong>Session</strong></td>
+<td>No</td>
+<td>No</td>
+<td>记住我只想你回复英文，无论我问你任何问题</td>
+</tr>
+</tbody>
+</table>
+<p>Remark:</p>
+<blockquote>
+<p>记忆文件路径为
+<code>"$HOME/Library/Application Support/Code/User/globalStorage/github.copilot-chat/memory-tool"</code></p>
+</blockquote>
+<h1 id="实验-md文档转换html工具">实验： md文档转换html工具</h1>
+<h2 id="user-story">User Story</h2>
+<p>我希望减少 AI 生成 HTML 文档时的 token
+消耗，以降低成本并提升效率。</p>
+<h2 id="techical-design">Techical Design</h2>
+<div class="mermaid">graph LR
+    A[AI]-->B[Markdown];
+    B-->|pwsh| C(HTML);</div>
+<h2 id="prompt">Prompt</h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode md"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>/plan</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>我想你做个PowerShell脚本帮我把md文档转换成html，要求输出的格式简约，但是不失美感，符合商业场景的使用。</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>我要你支持markdown高级图表处理, 包括Mermaid图表</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>脚本要自动从markdown文件中提取第一个标题作为HTML的标题</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>脚本解决pandoc生成的标题重复问题。</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>CSS内嵌到HTML文件中</span></code></pre></div>
+<h2 id="smoke-test">Smoke Test</h2>
+<pre class="shell"><code>pwsh -File ./Convert-MarkdownToHtml.ps1 \
+        -InputFile test.md \
+        -OutputFile test.html</code></pre>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, theme: "default" });</script>
+</body>
+</html>
+

@@ -1,0 +1,11 @@
+[project]
+name = "ai-sql-developer"
+version = "0.1.0"
+requires-python = ">=3.14.4"
+dependencies = [
+    "duckdb>=1.5.5",
+    "oracledb==4.0.2",
+    "pandas==3.0.5",
+    "python-dotenv>=1.2.3",
+    "tabulate==0.10.0",
+]

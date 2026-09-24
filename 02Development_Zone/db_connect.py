@@ -124,6 +124,10 @@ def query_oracle(sql: str, params=None, config: dict | None = None) -> pd.DataFr
         with oracledb.connect(user=cfg["user"], password=cfg["password"], dsn=dsn) as conn:
             with conn.cursor() as cur:
                 cur.execute(sql, params or [])
+                if cur.description is None:
+                    # conn.commit()
+                    print("Statement executed successfully.")
+                    return None
                 columns = [col[0].lower() for col in cur.description]
                 rows = [
                     {col: _serialize_value(v) for col, v in zip(columns, row)}
@@ -143,16 +147,67 @@ def query_oracle(sql: str, params=None, config: dict | None = None) -> pd.DataFr
 # Public API
 # ---------------------------------------------------------------------------
 
+def _split_sql_statements(sql: str) -> list[str]:
+    """Split semicolon-delimited SQL without splitting quoted literals."""
+    statements = []
+    statement_start = 0
+    quote = None
+    line_comment = False
+    block_comment = False
+    index = 0
+
+    while index < len(sql):
+        char = sql[index]
+        next_char = sql[index + 1] if index + 1 < len(sql) else ""
+        if line_comment:
+            if char == "\n":
+                line_comment = False
+        elif block_comment:
+            if char == "*" and next_char == "/":
+                block_comment = False
+                index += 1
+        elif quote:
+            if char == quote:
+                if next_char == quote:
+                    index += 1
+                else:
+                    quote = None
+        elif char == "-" and next_char == "-":
+            line_comment = True
+            index += 1
+        elif char == "/" and next_char == "*":
+            block_comment = True
+            index += 1
+        elif char in ("'", '"'):
+            quote = char
+        elif char == ";":
+            statement = sql[statement_start:index].strip()
+            if statement:
+                statements.append(statement)
+            statement_start = index + 1
+        index += 1
+
+    statement = sql[statement_start:].strip()
+    if statement:
+        statements.append(statement)
+    return statements
+
+
 def run_sql_dev(sql: str, params=None, config: dict | None = None) -> pd.DataFrame | None:
-    """Execute SQL against Oracle and display up to DISPLAY_ROWS rows.
+    """Execute one or more SQL statements and display the final query result.
 
     Args:
-        sql:    SQL statement to execute.
+        sql:    Semicolon-delimited SQL statements to execute.
         params: Bind parameters (list or dict).
         config: Override connection config; uses ORA env vars by default.
     """
-    sql = sql.replace(";", "")
-    df = query_oracle(sql, params=params, config=config)
+    statements = _split_sql_statements(sql.replace("#", "--"))
+    if not statements:
+        raise ValueError("SQL must contain at least one statement.")
+
+    df = None
+    for statement in statements:
+        df = query_oracle(statement, params=params, config=config)
     if df is None:
         return None
     total = len(df)
@@ -196,6 +251,10 @@ def get_ddl_dev(object_type: str, object_name: str, schema: str='DEV') -> pd.Dat
         object_type: Type of the object (e.g., 'TABLE', 'VIEW', 'PACKAGE').
         object_name: Name of the object.
         schema:      Optional schema name; defaults to DEV if not provided.
+
+    ## Example usage:
+    ## ddl = get_ddl_dev("PACKAGE", "PKG_JTA", schema="DEV")
+    ## print(ddl)
     """
     schema = schema or "DEV"
     sql = f"SELECT DBMS_METADATA.GET_DDL(:object_type, :object_name, :schema) AS ddl FROM DUAL"

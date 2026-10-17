@@ -6,10 +6,12 @@ Run.sh
 .vscode/
 .agents/skills
 .venv
+.idea
 
 00Ad_hoc/
 00Archive/
 02Development_Zone_bak/
-
+02Development_Zone/__pycache__
+05AdHoc
 # Files
 skills-lock.json

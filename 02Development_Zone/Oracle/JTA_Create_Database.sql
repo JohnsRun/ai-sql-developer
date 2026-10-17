@@ -74,7 +74,7 @@ CREATE TABLE products (
 
 DROP TABLE staff CASCADE CONSTRAINTS;
 DROP SEQUENCE seq_staff_id;
-CREATE SEQUENCE seq_staff_id START WITH 10 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE seq__a_channle_staff_id START WITH 10 INCREMENT BY 1 NOCACHE;
 CREATE TABLE staff (
   staff_id NUMBER,
   location_id NUMBER CONSTRAINT staff_location_nn NOT NULL,
@@ -641,6 +641,7 @@ CONSTRAINT work_hrs_staff_fk FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 --Insert Sample Data  
 INSERT INTO unit_measures VALUES 
 ('lb', 'pounds');
+--Insert Sample Data  
 INSERT INTO unit_measures VALUES
 ('kg', 'kilograms');
 INSERT INTO unit_measures VALUES
